@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Creación de usuario de paciente</title>
+    <title>Formulario de Paciente HL7 FHIR</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -13,6 +13,7 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            flex-direction: column;
         }
         .container {
             background-color: white;
@@ -20,20 +21,23 @@
             border-radius: 10px;
             box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
             width: 400px;
+            margin-top: 20px;
         }
         h1 {
             text-align: center;
             color: #00796b;
+            margin-bottom: 20px;
         }
         label {
             font-weight: bold;
             color: #00796b;
+            display: block;
+            margin-top: 10px;
         }
         input, select {
             width: 100%;
             padding: 8px;
             margin-top: 5px;
-            margin-bottom: 15px;
             border: 1px solid #00796b;
             border-radius: 5px;
         }
@@ -46,6 +50,7 @@
             border-radius: 5px;
             cursor: pointer;
             font-size: 16px;
+            margin-top: 15px;
         }
         button:hover {
             background-color: #004d40;
@@ -53,8 +58,8 @@
     </style>
 </head>
 <body>
+    <h1>Formulario de Paciente</h1>
     <div class="container">
-        <h1>Formulario de Paciente</h1>
         <form id="patientForm">
             <label for="name">Nombre:</label>
             <input type="text" id="name" name="name" required>
@@ -99,10 +104,8 @@
 
             <button type="submit">Enviar</button>
         </form>
-
-      <script src="app.js"></script>
-      
     </div>
 </body>
 </html>
+
 
