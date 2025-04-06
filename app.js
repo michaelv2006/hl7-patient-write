@@ -1,5 +1,5 @@
-document.getElementById("procedureForm").addEventListener("submit", async function (e) {
-  e.preventDefault();
+document.getElementById('procedureform').addEventListener('submit', function(event) {
+  event.preventDefault();
 
   const data = {
     resourceType: "ServiceRequest",
