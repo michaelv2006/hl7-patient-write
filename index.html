@@ -1,114 +1,150 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulario de Paciente HL7 FHIR</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #e0f7fa;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            margin: 0;
-            flex-direction: column;
-        }
-        .container {
-            background-color: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
-            width: 400px;
-            margin-top: 20px;
-        }
-        h1 {
-            text-align: center;
-            color: #00796b;
-            margin-bottom: 20px;
-        }
-        label {
-            font-weight: bold;
-            color: #00796b;
-            display: block;
-            margin-top: 10px;
-        }
-        input, select {
-            width: 100%;
-            padding: 8px;
-            margin-top: 5px;
-            border: 1px solid #00796b;
-            border-radius: 5px;
-        }
-        button {
-            width: 100%;
-            background-color: #00796b;
-            color: white;
-            padding: 10px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            margin-top: 15px;
-        }
-        button:hover {
-            background-color: #004d40;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulario de Procedimientos - HIS 2</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #e0f2f1;
+      margin: 0;
+      padding: 0;
+    }
+
+    .container {
+      max-width: 600px;
+      margin: 40px auto;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+      padding: 30px;
+    }
+
+    h1 {
+      text-align: center;
+      color: #00796b;
+      margin-bottom: 30px;
+    }
+
+    label {
+      display: block;
+      margin-top: 15px;
+      color: #004d40;
+      font-weight: bold;
+    }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 10px;
+      margin-top: 5px;
+      border: 1px solid #b2dfdb;
+      border-radius: 5px;
+      box-sizing: border-box;
+    }
+
+    textarea {
+      resize: vertical;
+    }
+
+    button {
+      width: 100%;
+      margin-top: 25px;
+      background-color: #00796b;
+      color: white;
+      border: none;
+      padding: 12px;
+      font-size: 16px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #004d40;
+    }
+  </style>
 </head>
 <body>
-    <h1>Formulario de Paciente</h1>
-    <div class="container">
-        <form id="patientForm">
-            <label for="name">Nombre:</label>
-            <input type="text" id="name" name="name" required>
 
-            <label for="familyName">Apellido:</label>
-            <input type="text" id="familyName" name="familyName" required>
+  <div class="container">
+    <h1>Solicitud de Procedimiento - FHIR</h1>
+    <form id="procedureRequestform">
+       <legend>Datos del Paciente</legend>
+                <div class="form-group">
+                    <label for="nombrePaciente" class="required-field">Nombre completo del paciente</label>
+                    <input type="text" id="nombrePaciente" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="fechaConsulta" class="required-field">Fecha de consulta</label>
+                    <input type="date" id="fechaConsulta" required>
+                </div>
+            </fieldset>
 
-            <label for="gender">Género:</label>
-            <select id="gender" name="gender" required>
-                <option value="male">Masculino</option>
-                <option value="female">Femenino</option>
-                <option value="other">Otro</option>
-                <option value="unknown">Desconocido</option>
-            </select>
+            <!-- Sección Médico -->
+            <fieldset>
+                <legend>Datos del Médico</legend>
+                <div class="form-group">
+                    <label for="nombreMedico" class="required-field">Nombre del médico tratante</label>
+                    <input type="text" id="nombreMedico" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="cedulaMedico" class="required-field">Cédula profesional</label>
+                    <input type="text" id="cedulaMedico" required>
+                </div>
+            </fieldset>
 
-            <label for="birthDate">Fecha de Nacimiento:</label>
-            <input type="date" id="birthDate" name="birthDate" required>
+            <!-- Sección Diagnóstico -->
+            <fieldset class="full-width">
+                <legend>Diagnóstico</legend>
+                <div class="form-group">
+                    <label for="diagnostico" class="required-field">Diagnóstico principal</label>
+                    <textarea id="diagnostico" required></textarea>
+                </div>
+            </fieldset>
 
-            <label for="identifierSystem">Tipo de documento:</label>
-            <select id="identifierSystem" name="identifierSystem" required>
-                <option value="http://cedula">Cédula</option>
-                <option value="http://pasaporte">Pasaporte</option>
-            </select>
+            <!-- Sección Procedimiento -->
+            <fieldset class="full-width">
+                <legend>Procedimiento Solicitado</legend>
+                <div class="form-group">
+                    <label for="procedimiento" class="required-field">Nombre del procedimiento</label>
+                    <input type="text" id="procedimiento" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="justificacion" class="required-field">Justificación médica</label>
+                    <textarea id="justificacion" required></textarea>
+                </div>
+            </fieldset>
 
-            <label for="identifierValue">Número de documento:</label>
-            <input type="text" id="identifierValue" name="identifierValue" required>
+            <!-- Sección Citas -->
+            <fieldset class="full-width">
+                <legend>Disponibilidad para Citas</legend>
+                <div class="form-group">
+                    <label>Fechas disponibles preferentes</label>
+                    <div class="date-options">
+                        <input type="date" id="fechaOpcion1">
+                        <input type="date" id="fechaOpcion2">
+                        <input type="date" id="fechaOpcion3">
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="horarioPreferente">Horario preferente</label>
+                    <select id="horarioPreferente">
+                        <option value="matutino">Mañana</option>
+                        <option value="vespertino">Tarde</option>
+                        <option value="nocturno">Noche</option>
+                    </select>
+                </div>
+            </fieldset>
 
-            <label for="cellPhone">Teléfono celular:</label>
-            <input type="text" id="cellPhone" name="cellPhone" required>
-
-            <label for="email">Correo electrónico:</label>
-            <input type="email" id="email" name="email" required>
-
-            <label for="address">Dirección:</label>
-            <input type="text" id="address" name="address" required>
-
-            <label for="city">Ciudad:</label>
-            <input type="text" id="city" name="city" required>
-
-            <label for="postalCode">Código postal:</label>
-            <input type="text" id="postalCode" name="postalCode" required>
-
-            <button type="submit">Enviar</button>
+            <button type="submit" class="btn-submit">Enviar Solicitud</button>
         </form>
     </div>
-    
-    <script src="app.js"></script>
-    
+
+<script src="app.js"></script>
 </body>
 </html>
-
-
+    
