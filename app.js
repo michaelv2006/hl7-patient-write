@@ -1,4 +1,4 @@
-document.getElementById('procedureform').addEventListener('submit', function(event) {
+document.getElementById('procedureForm').addEventListener('submit', function(event) {
   event.preventDefault();
 
   const data = {
