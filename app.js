@@ -57,6 +57,3 @@ document.getElementById('procedureForm').addEventListener('submit', async (e) =>
   }
 });
 
-  });
-});
-
