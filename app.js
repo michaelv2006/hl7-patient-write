@@ -1,50 +1,62 @@
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("procedureForm");
-  const statusMsg = document.getElementById("status");
-  const errorMsg = document.getElementById("error");
+document.getElementById("procedureForm").addEventListener("submit", async function (e) {
+  e.preventDefault();
 
-  form.addEventListener("submit", async (e) => {
-    e.preventDefault();
+  const data = {
+    resourceType: "ServiceRequest",
+    status: "active",
+    intent: "order",
+    subject: {
+      display: `${document.getElementById("name").value} ${document.getElementById("lastName").value}`,
+    },
+    performer: [
+      {
+        display: document.getElementById("practitionerName").value,
+      },
+    ],
+    occurrenceDateTime: document.getElementById("performedDateTime").value,
+    code: {
+      text: document.getElementById("description").value,
+    },
+    supportingInfo: [
+      {
+        telecom: [
+          {
+            system: "phone",
+            value: document.getElementById("phone").value,
+          },
+          {
+            system: "email",
+            value: document.getElementById("email").value || "",
+          }
+        ],
+        gender: document.getElementById("gender").value,
+      },
+    ],
+  };
 
-    // Oculta mensajes anteriores
-    statusMsg.style.display = "none";
-    errorMsg.style.display = "none";
+  try {
+    const response = await fetch("https://hl7-fhir-ehr-michael.onrender.com/service-request/", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
 
-    // Captura los datos del formulario
-    const data = {
-      name: document.getElementById("name").value.trim(),
-      lastName: document.getElementById("lastName").value.trim(),
-      gender: document.getElementById("gender").value,
-      phone: document.getElementById("phone").value.trim(),
-      email: document.getElementById("email").value.trim(),
-      practitionerName: document.getElementById("practitionerName").value.trim(),
-      performedDateTime: document.getElementById("performedDateTime").value,
-      description: document.getElementById("description").value.trim(),
-    };
-
-    try {
-      const response = await fetch("https://hl7-fhir-ehr-michael.onrender.com/procedures", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify(data),
-      });
-
-      if (response.ok) {
-        statusMsg.style.display = "block";
-        form.reset();
-      } else {
-        const resText = await response.text();
-        console.error("Error en respuesta:", resText);
-        errorMsg.innerText = "Error del servidor: " + resText;
-        errorMsg.style.display = "block";
-      }
-    } catch (error) {
-      console.error("Error al conectar:", error);
-      errorMsg.innerText = "Fallo de conexión: " + error.message;
-      errorMsg.style.display = "block";
+    if (response.ok) {
+      const result = await response.json();
+      alert("Procedimiento registrado exitosamente. ID: " + result._id);
+      document.getElementById("procedureForm").reset();
+    } else {
+      const errorData = await response.json();
+      alert("Error al registrar procedimiento: " + errorData.detail);
     }
+  } catch (error) {
+    console.error("Error:", error);
+    alert("Error de conexión con el servidor.");
+  }
+});
+
   });
 });
 
