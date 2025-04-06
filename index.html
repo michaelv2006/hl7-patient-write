@@ -1,148 +1,131 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Formulario de Procedimientos - HIS 2</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Solicitud Médica</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background-color: #e0f2f1;
-      margin: 0;
-      padding: 0;
+    :root {
+      --bg: #f1f4f8;
+      --card-bg: rgba(255, 255, 255, 0.85);
+      --primary: #3a7bd5;
+      --secondary: #74ebd5;
+      --text: #2c3e50;
+      --hover: #2a5fa3;
     }
 
-    .container {
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(to right, var(--primary), var(--secondary));
+      margin: 0;
+      padding: 2rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    .box {
+      width: 100%;
       max-width: 600px;
-      margin: 40px auto;
-      background-color: white;
-      border-radius: 10px;
-      box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
-      padding: 30px;
+      background: var(--card-bg);
+      backdrop-filter: blur(10px);
+      padding: 2rem;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      border: 1px solid #ffffff33;
     }
 
     h1 {
       text-align: center;
-      color: #00796b;
-      margin-bottom: 30px;
+      color: var(--primary);
+      margin-bottom: 1.5rem;
     }
 
     label {
       display: block;
-      margin-top: 15px;
-      color: #004d40;
-      font-weight: bold;
+      font-weight: 600;
+      margin-top: 1rem;
+      color: var(--text);
     }
 
     input, select, textarea {
       width: 100%;
-      padding: 10px;
-      margin-top: 5px;
-      border: 1px solid #b2dfdb;
-      border-radius: 5px;
-      box-sizing: border-box;
+      padding: 0.75rem;
+      margin-top: 0.3rem;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+      background-color: #fdfefe;
+      transition: border-color 0.3s;
     }
 
-    textarea {
-      resize: vertical;
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+      outline: none;
     }
 
     button {
+      margin-top: 2rem;
       width: 100%;
-      margin-top: 25px;
-      background-color: #00796b;
+      background: var(--primary);
       color: white;
       border: none;
-      padding: 12px;
-      font-size: 16px;
-      border-radius: 6px;
+      padding: 1rem;
+      font-size: 1rem;
+      border-radius: 10px;
       cursor: pointer;
+      transition: background 0.3s;
     }
 
     button:hover {
-      background-color: #004d40;
+      background: var(--hover);
     }
   </style>
 </head>
 <body>
+  <div class="box">
+    <h1>Solicitud Médica</h1>
+    <form id="form">
+      <label>Paciente *</label>
+      <input type="text" id="paciente" required />
 
-  <div class="container">
-    <h1>Solicitud de Procedimiento - FHIR</h1>
-    <form id="procedureRequestform">
-       <legend>Datos del Paciente</legend>
-                <div class="form-group">
-                    <label for="nombrePaciente" class="required-field">Nombre completo del paciente</label>
-                    <input type="text" id="nombrePaciente" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="fechaConsulta" class="required-field">Fecha de consulta</label>
-                    <input type="date" id="fechaConsulta" required>
-                </div>
-            </fieldset>
+      <label>Fecha de consulta *</label>
+      <input type="date" id="consulta" required />
 
-            <!-- Sección Médico -->
-            <fieldset>
-                <legend>Datos del Médico</legend>
-                <div class="form-group">
-                    <label for="nombreMedico" class="required-field">Nombre del médico tratante</label>
-                    <input type="text" id="nombreMedico" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="cedulaMedico" class="required-field">Cédula profesional</label>
-                    <input type="text" id="cedulaMedico" required>
-                </div>
-            </fieldset>
+      <label>Médico *</label>
+      <input type="text" id="medico" required />
 
-            <!-- Sección Diagnóstico -->
-            <fieldset class="full-width">
-                <legend>Diagnóstico</legend>
-                <div class="form-group">
-                    <label for="diagnostico" class="required-field">Diagnóstico principal</label>
-                    <textarea id="diagnostico" required></textarea>
-                </div>
-            </fieldset>
+      <label>Cédula *</label>
+      <input type="text" id="cedula" required />
 
-            <!-- Sección Procedimiento -->
-            <fieldset class="full-width">
-                <legend>Procedimiento Solicitado</legend>
-                <div class="form-group">
-                    <label for="procedimiento" class="required-field">Nombre del procedimiento</label>
-                    <input type="text" id="procedimiento" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="justificacion" class="required-field">Justificación médica</label>
-                    <textarea id="justificacion" required></textarea>
-                </div>
-            </fieldset>
+      <label>Diagnóstico *</label>
+      <textarea id="dx" required></textarea>
 
-            <!-- Sección Citas -->
-            <fieldset class="full-width">
-                <legend>Disponibilidad para Citas</legend>
-                <div class="form-group">
-                    <label>Fechas disponibles preferentes</label>
-                    <div class="date-options">
-                        <input type="date" id="fechaOpcion1">
-                        <input type="date" id="fechaOpcion2">
-                        <input type="date" id="fechaOpcion3">
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="horarioPreferente">Horario preferente</label>
-                    <select id="horarioPreferente">
-                        <option value="matutino">Mañana</option>
-                        <option value="vespertino">Tarde</option>
-                        <option value="nocturno">Noche</option>
-                    </select>
-                </div>
-            </fieldset>
+      <label>Procedimiento *</label>
+      <input type="text" id="proc" required />
 
-            <button type="submit" class="btn-submit">Enviar Solicitud</button>
-        </form>
-    </div>
+      <label>Justificación *</label>
+      <textarea id="just" required></textarea>
+
+      <label>Fecha preferida de cita</label>
+      <input type="date" id="fechaCita" />
+
+      <label>Horario</label>
+      <select id="hora">
+        <option value="matutino">8–12</option>
+        <option value="vespertino">12–16</option>
+        <option value="Noche">16–20</option>
+      </select>
+
+      <button type="submit">Enviar Solicitud</button>
+    </form>
+  </div>
+  <script src="app.js"></script>
+</body>
+</html>
+
 
 <script src="app.js"></script>
 </body>
