@@ -1,36 +1,34 @@
-document.getElementById('procedureRequestform').addEventListener('submit', function(event) {
+document.getElementById('form').addEventListener('submit', function(event) {
   event.preventDefault();
-
+ 
   // Obtener los valores del formulario
-  const nombrePaciente    = document.getElementById('nombrePaciente').value;
-  const fechaConsulta     = document.getElementById('fechaConsulta').value;
-  const nombreMedico      = document.getElementById('nombreMedico').value;
-  const cedulaMedico      = document.getElementById('cedulaMedico').value;
-  const diagnostico       = document.getElementById('diagnostico').value;
-  const procedimiento     = document.getElementById('procedimiento').value;
-  const justificacion     = document.getElementById('justificacion').value;
-  const fechaOpcion1      = document.getElementById('fechaOpcion1').value;
-  const fechaOpcion2      = document.getElementById('fechaOpcion2').value;
-  const fechaOpcion3      = document.getElementById('fechaOpcion3').value;
-  const horarioPreferente = document.getElementById('horarioPreferente').value;
-
+  const paciente = document.getElementById('paciente').value;
+  const consulta = document.getElementById('consulta').value;
+  const medico = document.getElementById('medico').value;
+  const cedula = document.getElementById('cedula').value;
+  const dx = document.getElementById('dx').value;
+  const proc = document.getElementById('proc').value;
+  const just = document.getElementById('just').value;
+  const fechaCita = document.getElementById('fechaCita').value;
+  const hora = document.getElementById('hora').value;
+ 
   // Construir el objeto con los datos de la solicitud médica
   const serviceRequestData = {
-    paciente: nombrePaciente,
-    fechaConsulta: fechaConsulta,
-    medico: nombreMedico,
-    cedulaMedico: cedulaMedico,
-    diagnostico: diagnostico,
-    procedimiento: procedimiento,
-    justificacion: justificacion,
-    fechasDisponibles: [fechaOpcion1, fechaOpcion2, fechaOpcion3],
-    horarioPreferente: horarioPreferente
+    paciente: paciente,
+    consulta: consulta,
+    medico: medico,
+    cedula: cedula,
+    diagnostico: dx,
+    procedimiento: proc,
+    justificacion: just,
+    fechaCita: fechaCita,
+    hora: hora
   };
-
-  console.log('Datos de la solicitud:', serviceRequestData);
-
+ 
+  console.log(serviceRequestData);
+ 
   // Enviar la solicitud al backend (con trailing slash)
-  fetch('https://hl7-fhir-ehr-michael.onrender.com/service-request', {
+  fetch('https://hl7-fhir-ehr-leonardo.onrender.com/service-request/', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify(serviceRequestData)
@@ -43,7 +41,7 @@ document.getElementById('procedureRequestform').addEventListener('submit', funct
   })
   .then(data => {
     console.log('Success:', data);
-    alert('Solicitud de procedimiento creada exitosamente! ID: ' + data._id);
+    alert('Service Request creado exitosamente! ID: ' + data._id);
   })
   .catch(error => {
     console.error('Error:', error);
