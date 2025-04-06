@@ -1,50 +1,51 @@
-document.getElementById('form').addEventListener('submit', function(event) {
-  event.preventDefault();
- 
-  // Obtener los valores del formulario
-  const paciente = document.getElementById('paciente').value;
-  const consulta = document.getElementById('consulta').value;
-  const medico = document.getElementById('medico').value;
-  const cedula = document.getElementById('cedula').value;
-  const dx = document.getElementById('dx').value;
-  const proc = document.getElementById('proc').value;
-  const just = document.getElementById('just').value;
-  const fechaCita = document.getElementById('fechaCita').value;
-  const hora = document.getElementById('hora').value;
- 
-  // Construir el objeto con los datos de la solicitud médica
-  const serviceRequestData = {
-    paciente: paciente,
-    consulta: consulta,
-    medico: medico,
-    cedula: cedula,
-    diagnostico: dx,
-    procedimiento: proc,
-    justificacion: just,
-    fechaCita: fechaCita,
-    hora: hora
+document.getElementById("form").addEventListener("submit", async (e) => {
+  e.preventDefault();
+
+  // Obtener datos del formulario
+  const name = document.getElementById("paciente").value.trim();
+  const birthDate = document.getElementById("consulta").value.trim(); // Asumido como fecha de nacimiento
+  const practitioner = document.getElementById("medico").value.trim(); // Este no es parte de Patient FHIR pero lo dejamos como nota
+  const gender = "unknown"; // Si no hay input de género, se puede ajustar
+  const identifier = document.getElementById("cedula").value.trim();
+
+  // Crear objeto FHIR tipo Patient
+  const patientFHIR = {
+    resourceType: "Patient",
+    name: [
+      {
+        use: "official",
+        text: name
+      }
+    ],
+    gender: gender,
+    birthDate: birthDate,
+    identifier: [
+      {
+        use: "official",
+        system: "http://hospital.example.org/cedula",
+        value: identifier
+      }
+    ]
   };
- 
-  console.log(serviceRequestData);
- 
-  // Enviar la solicitud al backend (con trailing slash)
-  fetch('https://hl7-fhir-ehr-michael.onrender.com/patient', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(serviceRequestData)
-  })
-  .then(response => {
+
+  try {
+    const response = await fetch("https://hl7-fhir-ehr-michael.onrender.com/patient", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(patientFHIR)
+    });
+
     if (!response.ok) {
-      throw new Error('Error en la solicitud: ' + response.statusText);
+      throw new Error("Error en la solicitud: " + response.statusText);
     }
-    return response.json();
-  })
-  .then(data => {
-    console.log('Success:', data);
-    alert('Service Request creado exitosamente! ID: ' + data._id);
-  })
-  .catch(error => {
-    console.error('Error:', error);
-    alert('Hubo un error en la solicitud: ' + error.message);
-  });
+
+    const result = await response.json();
+    alert("Paciente registrado correctamente ✅");
+    console.log("Respuesta del servidor:", result);
+  } catch (error) {
+    alert("Hubo un error al registrar el paciente ❌");
+    console.error("Error:", error);
+  }
 });
