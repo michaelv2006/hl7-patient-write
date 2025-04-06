@@ -1,51 +1,50 @@
-document.getElementById("form").addEventListener("submit", async (e) => {
-  e.preventDefault();
+document.addEventListener("DOMContentLoaded", () => {
+  const form = document.getElementById("procedureForm");
+  const statusMsg = document.getElementById("status");
+  const errorMsg = document.getElementById("error");
 
-  // Obtener datos del formulario
-  const name = document.getElementById("paciente").value.trim();
-  const birthDate = document.getElementById("consulta").value.trim(); // Asumido como fecha de nacimiento
-  const practitioner = document.getElementById("medico").value.trim(); // Este no es parte de Patient FHIR pero lo dejamos como nota
-  const gender = "unknown"; // Si no hay input de género, se puede ajustar
-  const identifier = document.getElementById("cedula").value.trim();
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-  // Crear objeto FHIR tipo Patient
-  const patientFHIR = {
-    resourceType: "Patient",
-    name: [
-      {
-        use: "official",
-        text: name
+    // Oculta mensajes anteriores
+    statusMsg.style.display = "none";
+    errorMsg.style.display = "none";
+
+    // Captura los datos del formulario
+    const data = {
+      name: document.getElementById("name").value.trim(),
+      lastName: document.getElementById("lastName").value.trim(),
+      gender: document.getElementById("gender").value,
+      phone: document.getElementById("phone").value.trim(),
+      email: document.getElementById("email").value.trim(),
+      practitionerName: document.getElementById("practitionerName").value.trim(),
+      performedDateTime: document.getElementById("performedDateTime").value,
+      description: document.getElementById("description").value.trim(),
+    };
+
+    try {
+      const response = await fetch("https://hl7-fhir-ehr-michael.onrender.com/procedures", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        statusMsg.style.display = "block";
+        form.reset();
+      } else {
+        const resText = await response.text();
+        console.error("Error en respuesta:", resText);
+        errorMsg.innerText = "Error del servidor: " + resText;
+        errorMsg.style.display = "block";
       }
-    ],
-    gender: gender,
-    birthDate: birthDate,
-    identifier: [
-      {
-        use: "official",
-        system: "http://hospital.example.org/cedula",
-        value: identifier
-      }
-    ]
-  };
-
-  try {
-    const response = await fetch("https://hl7-fhir-ehr-michael.onrender.com/patient", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify(patientFHIR)
-    });
-
-    if (!response.ok) {
-      throw new Error("Error en la solicitud: " + response.statusText);
+    } catch (error) {
+      console.error("Error al conectar:", error);
+      errorMsg.innerText = "Fallo de conexión: " + error.message;
+      errorMsg.style.display = "block";
     }
-
-    const result = await response.json();
-    alert("Paciente registrado correctamente ✅");
-    console.log("Respuesta del servidor:", result);
-  } catch (error) {
-    alert("Hubo un error al registrar el paciente ❌");
-    console.error("Error:", error);
-  }
+  });
 });
+
