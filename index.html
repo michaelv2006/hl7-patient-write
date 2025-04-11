@@ -1,134 +1,60 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Registro de Procedimientos - HIS 2</title>
-  <style>
-    :root {
-      --bg: #f4faff;
-      --primary: #005b8f;
-      --secondary: #cce6ff;
-      --text: #0a2c3d;
-      --hover: #00426a;
-    }
-
-    body {
-      font-family: 'Segoe UI', sans-serif;
-      background: var(--bg);
-      margin: 0;
-      padding: 2rem;
-    }
-
-    .container {
-      max-width: 650px;
-      margin: auto;
-      background: #fff;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-      border-left: 5px solid var(--primary);
-    }
-
-    h1 {
-      text-align: center;
-      color: var(--primary);
-      margin-bottom: 1.5rem;
-    }
-
-    label {
-      font-weight: 600;
-      display: block;
-      margin-top: 1rem;
-      color: var(--text);
-    }
-
-    input, textarea, select {
-      width: 100%;
-      padding: 0.6rem;
-      margin-top: 0.3rem;
-      border-radius: 6px;
-      border: 1px solid var(--secondary);
-      font-size: 1rem;
-      background-color: #f9f9f9;
-    }
-
-    button {
-      margin-top: 1.5rem;
-      background: var(--primary);
-      color: #fff;
-      padding: 0.9rem;
-      width: 100%;
-      font-size: 1rem;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    button:hover {
-      background: var(--hover);
-    }
-
-    .success, .error {
-      text-align: center;
-      font-weight: 600;
-      margin-top: 1rem;
-    }
-
-    .success {
-      color: green;
-    }
-
-    .error {
-      color: red;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Paciente HL7 FHIR</title>
 </head>
 <body>
-  <div class="container">
-    <h1>Formulario de Procedimientos - HIS 2</h1>
-    <form id="procedureForm">
-      <label for="name">Nombre del Paciente *</label>
-      <input type="text" id="name" required />
+    <h1>Formulario de Paciente HL7 FHIR</h1>
+    <form id="patientForm">
+        <label for="name">Nombre:</label>
+        <input type="text" id="name" name="name" required><br><br>
 
-      <label for="lastName">Apellido del Paciente *</label>
-      <input type="text" id="lastName" required />
+        <label for="familyName">Apellido:</label>
+        <input type="text" id="familyName" name="familyName" required><br><br>
 
-      <label for="gender">Género *</label>
-      <select id="gender" required>
-        <option value="">Seleccione</option>
-        <option value="male">Masculino</option>
-        <option value="female">Femenino</option>
-        <option value="other">Otro</option>
-      </select>
+        <label for="gender">Género:</label>
+        <select id="gender" name="gender" required>
+            <option value="male">Masculino</option>
+            <option value="female">Femenino</option>
+            <option value="other">Otro</option>
+            <option value="unknown">Desconocido</option>
+        </select><br><br>
 
-      <label for="phone">Teléfono</label>
-      <input type="tel" id="phone" />
+        <label for="birthDate">Fecha de Nacimiento:</label>
+        <input type="date" id="birthDate" name="birthDate" required><br><br>
 
-      <label for="email">Correo Electrónico</label>
-      <input type="email" id="email" />
+        <label for="identifierSystem">Tipo de documento de identidad:</label>
+        <select id="identifierSystem" name="identifierSystem" required>
+            <option value="http://cedula">Cédula de ciudadanía</option>
+            <option value="http://pasaporte">Pasaporte</option>
+        </select><br><br>
 
-      <label for="practitionerName">Nombre del Profesional</label>
-      <input type="text" id="practitionerName" />
+        <label for="identifierValue">Número de documento:</label>
+        <input type="text" id="identifierValue" name="identifierValue" required><br><br>
 
-      <label for="performedDateTime">Fecha del Procedimiento *</label>
-      <input type="date" id="performedDateTime" required />
+        <label for="cellPhone">Teléfono celular:</label>
+        <input type="text" id="cellPhone" name="cellPhone" required><br><br>
 
-      <label for="description">Descripción del Procedimiento *</label>
-      <textarea id="description" rows="3" required></textarea>
+        <label for="email">Correo electrónico:</label>
+        <input type="text" id="email" name="email" required><br><br>
 
-      <button type="submit">Enviar</button>
+        <label for="address">Dirección:</label>
+        <input type="text" id="address" name="address" required><br><br>
+
+        <label for="city">Ciudad:</label>
+        <input type="text" id="city" name="city" required><br><br>
+
+        <label for="postalCode">Código postal:</label>
+        <input type="text" id="postalCode" name="postalCode" required><br><br>
+
+        <button type="submit">Enviar</button>
     </form>
 
-    <div id="status" class="success" style="display: none;">Formulario enviado con éxito</div>
-    <div id="error" class="error" style="display: none;">Hubo un error al enviar</div>
-  </div>
-
-  <script src="app.js"></script>
+    <script src="app.js"></script>
 </body>
 </html>
-
 
 
     
