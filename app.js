@@ -54,13 +54,17 @@ document.getElementById('patientForm').addEventListener('submit', function(event
         },
         body: JSON.stringify(patient)
     })
-    .then(response => response.json())
-    .then(data => {
-        console.log('Success:', data);
-        alert('Paciente creado exitosamente!');
-    })
-    .catch((error) => {
-        console.error('Error:', error);
-        alert('Hubo un error al crear el paciente.');
-    });
+    .then(async response => {
+    const data = await response.json().catch(() => ({})); // por si no es JSON
+    if (!response.ok) {
+        console.error("Respuesta no OK:", response.status, data);
+        alert(`Error al crear paciente: ${response.status} - ${data.detail || "Error desconocido"}`);
+        return;
+    }
+    console.log('Success:', data);
+    alert('Paciente creado exitosamente!');
+})
+.catch((error) => {
+    console.error('Error de red o fetch:', error);
+    alert('Hubo un error de red al crear el paciente.');
 });
